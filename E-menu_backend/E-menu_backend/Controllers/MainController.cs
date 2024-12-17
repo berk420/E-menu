@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using FastReport;
+using FastReport.Export.PdfSimple;
 using System.IO;
 
 namespace E_menu_backend.Controllers
@@ -11,18 +13,37 @@ namespace E_menu_backend.Controllers
         [HttpGet("test")]
         public IActionResult GetTest()
         {
-            // PDF dosyasının yolu
-            var pdfFilePath = Path.Combine(Directory.GetCurrentDirectory(), "testpdf.pdf");
+            // Rapor şablonunun yolu
+            var reportPath = Path.Combine(Directory.GetCurrentDirectory(), "template.frx");
 
-            // Dosya var mı kontrolü
-            if (!System.IO.File.Exists(pdfFilePath))
+            if (!System.IO.File.Exists(reportPath))
             {
-                return NotFound("PDF dosyası bulunamadı.");
+                return NotFound("Rapor şablonu bulunamadı.");
             }
 
-            // PDF dosyasını oku ve gönder
-            var pdfFile = System.IO.File.ReadAllBytes(pdfFilePath);
-            return File(pdfFile, "application/pdf", "testpdf.pdf");
+            // FastReport ile PDF oluştur
+            using (var report = new Report())
+            {
+                // Şablonu yükle
+                report.Load(reportPath);
+
+                // Verilerle doldurma (sabit veri ekleme)
+                report.SetParameterValue("Container1", "Bu sabit bir veridir");
+
+                // Raporu hazırlama
+                report.Prepare();
+
+                // PDF dosyasına yazma
+                using (var pdfStream = new MemoryStream())
+                {
+                    var pdfExport = new PDFSimpleExport();
+                    report.Export(pdfExport, pdfStream);
+                    pdfStream.Position = 0;
+
+                    // PDF dosyasını geri döndür
+                    return File(pdfStream.ToArray(), "application/pdf", "testpdf.pdf");
+                }
+            }
         }
     }
 }
