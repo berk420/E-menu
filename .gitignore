@@ -10,3 +10,35 @@
 /E-menu_backend/.vs/E-menu_backend/v17/.futdcache.v2
 /E-menu_backend/.vs/E-menu_backend/DesignTimeBuild/.dtbcache.v2
 /E-menu_backend/.vs/E-menu_backend/FileContentIndex/800c12d6-bccb-43a9-b8ff-85f3017327d0.vsidx
+
+# Build output directories
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+
+# Logs
+*.log
+
+# Packages
+packages/
+*.nupkg
+
+# IDE-specific files
+.vscode/
+.idea/
+*.vsidx
+
+# Temporary files
+*.tmp
+*.temp
+
+# Coverage reports
+TestResults/
+*.coverage
+
+# Secrets
+*.env
+secrets.json
