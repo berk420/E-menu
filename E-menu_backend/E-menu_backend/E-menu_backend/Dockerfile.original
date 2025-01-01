@@ -1,0 +1,23 @@
+# .NET SDK imajını temel al
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+# Çalışma dizini oluştur
+WORKDIR /app
+
+# Proje dosyasını kopyala ve uygulamayı yayınla
+COPY . .
+RUN dotnet publish -c Release -o /app/out
+
+# Çalıştırılacak son katman
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+
+# Çalışma dizini oluştur
+WORKDIR /app
+
+# Yayınlanmış dosyaları kopyala
+COPY --from=build /app/out .
+
+EXPOSE 8080
+
+# HTTP ve Swagger servisini çalıştır
+ENTRYPOINT ["dotnet", "E-menu_backend.dll"]

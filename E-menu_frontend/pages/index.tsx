@@ -7,7 +7,7 @@ export default function Homepage() {
 
   const test = async () => {
     try {
-      const response = await fetch(`http://localhost:5210/api/Main/test`, {
+      const response = await fetch(`http://localhost:8080/api/Main/test`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
