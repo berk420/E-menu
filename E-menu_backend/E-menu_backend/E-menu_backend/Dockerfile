@@ -1,3 +1,4 @@
+
 # See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 # Stage 1: Build stage
@@ -27,4 +28,17 @@ RUN dotnet publish "./E-menu_backend.csproj" -c $BUILD_CONFIGURATION -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN apt-get update && apt-get install -y libgdiplus libx11-dev libgtk-3-dev libasound2-dev
+
+RUN apt-get update && apt-get install -y \
+    libgdiplus \
+    libx11-dev \
+    libgtk-3-dev \
+    libasound2-dev \
+    libcups2-dev \
+    libgdk-pixbuf2.0-dev \
+    libjpeg-dev \
+    libpng-dev
+
+
 ENTRYPOINT ["dotnet", "E-menu_backend.dll"]

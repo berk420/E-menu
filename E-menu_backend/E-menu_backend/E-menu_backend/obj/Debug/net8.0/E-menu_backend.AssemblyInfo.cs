@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("E-menu_backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+896c108378cb24690e5a8296a8110b72558c36b5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9c1ae6a996c7f9ac01b75c471287e81d71c7b4f3")]
 [assembly: System.Reflection.AssemblyProductAttribute("E-menu_backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("E-menu_backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

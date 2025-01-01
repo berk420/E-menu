@@ -1,0 +1,71 @@
+
+//you gave to be in dockerfile's path
+
+docker build -t berk420/backend:1.1 .
+docker build -t berk420/frontend:1.1 .
+
+docker push berk420/frontend:1.1
+docker push berk420/backend:1.1
+
+//----------docker kurulumu
+Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe; Start-Process -FilePath .\DockerDesktopInstaller.exe
+
+docker login -u "berk.gm12@gmail.com" -p "0507.ggttyy"
+
+
+docker pull berk420/frontend:1.0.0
+
+docker run -p 3000:3000 berk420/frontend:1.1
+
+
+docker pull berk420/backend:1.1
+
+docker run -p 8080:8080 -p 8081:8081 berk420/backend:1.1
+
+
+
+
+
+
+
+# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+# Stage 1: Build stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+# Restore dependencies
+COPY E-menu_backend.csproj ./
+RUN dotnet restore "./E-menu_backend.csproj"
+# Copy source code
+COPY . .
+WORKDIR "/src"
+# Build the project
+RUN dotnet build "./E-menu_backend.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# Stage 2: Publish stage
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./E-menu_backend.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# Stage 3: Run stage
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+RUN apt-get update && apt-get install -y libgdiplus
+ENTRYPOINT ["dotnet", "E-menu_backend.dll"]
+
+
+
+
+DllNotFoundException: Unable to load shared library 'gdiplus.dll' or one of its dependencies. In order to help diagnose loading problems, consider using a tool like strace. If you're using glibc, consider setting the LD_DEBUG environment variable: 
+/usr/share/dotnet/shared/Microsoft.NETCore.App/8.0.11/gdiplus.dll.so: cannot open shared object file: No such file or directory
+/usr/share/dotnet/shared/Microsoft.NETCore.App/8.0.11/libgdiplus.dll.so: cannot open shared object file: No such file or directory
+/usr/share/dotnet/shared/Microsoft.NETCore.App/8.0.11/gdiplus.dll: cannot open shared object file: No such file or directory
+/usr/share/dotnet/shared/Microsoft.NETCore.App/8.0.11/libgdiplus.dll: cannot open shared object file: No such file or directory
+
