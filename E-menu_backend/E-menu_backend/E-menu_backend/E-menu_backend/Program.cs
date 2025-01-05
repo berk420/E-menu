@@ -1,51 +1,57 @@
-public class Program
+namespace E_menu_backend
 {
-    public static void Main(string[] args)
+    public class Program
     {
-        // Uygulamanýn baþlatýlmasý
-        var builder = WebApplication.CreateBuilder(args);
-
-        // Servisleri ekle
-        builder.Services.AddControllers();
-
-        builder.Services.AddCors(options =>
+        public static void Main(string[] args)
         {
-            options.AddPolicy("AllowLocalhost3000", policy =>
+            // Uygulamanýn baþlatýlmasý
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Servisleri ekle
+            builder.Services.AddControllers();
+
+            builder.Services.AddCors(options =>
             {
-                policy.AllowAnyOrigin()   // Tüm IP'lere izin verir.
-                      .AllowAnyMethod()   // Tüm HTTP yöntemlerine (GET, POST, vb.) izin verir.
-                      .AllowAnyHeader();  // Tüm baþlýklara izin verir.
+                options.AddPolicy("AllowLocalhost3000", policy =>
+                {
+                    policy.AllowAnyOrigin()   // Tüm IP'lere izin verir.
+                          .AllowAnyMethod()   // Tüm HTTP yöntemlerine (GET, POST, vb.) izin verir.
+                          .AllowAnyHeader();  // Tüm baþlýklara izin verir.
+                });
             });
-        });
 
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
-        // WebApplication oluþturuluyor
-        var app = builder.Build();
+            // WebApplication oluþturuluyor
+            var app = builder.Build();
 
-        // Cors middleware
-        app.UseCors("AllowLocalhost3000");
+            // Cors middleware
+            app.UseCors("AllowLocalhost3000");
 
-        // Swagger yalnýzca geliþtirme ortamýnda
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            // Swagger yalnýzca geliþtirme ortamýnda
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            // HTTPS yönlendirmesi
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
+
+            // Controller'larý baðlama
+            app.MapControllers();
+
+            app.Run("http://*:8080");
+
+
+            // Ana sayfa map'lemesi
+            app.MapGet("/", () => "Hello World!");
+
+            // Uygulamanýn çalýþtýrýlmasý
+            app.Run();
         }
-
-        // HTTPS yönlendirmesi
-        app.UseHttpsRedirection();
-
-        app.UseAuthorization();
-
-        // Controller'larý baðlama
-        app.MapControllers();
-
-        // Ana sayfa map'lemesi
-        app.MapGet("/", () => "Hello World!");
-
-        // Uygulamanýn çalýþtýrýlmasý
-        app.Run();
     }
 }

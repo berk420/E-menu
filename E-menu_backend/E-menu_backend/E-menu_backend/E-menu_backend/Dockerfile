@@ -1,28 +1,32 @@
 # Base image for .NET 6.0 runtime
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8080
+EXPOSE 8081
 
 # Build image for .NET 6.0 SDK
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["E-menu_backend.csproj", "E-menu_backend/"]
-RUN dotnet restore "./E-menu_backend/E-menu_backend.csproj"
-COPY . . 
 WORKDIR "/src/E-menu_backend"
-RUN dotnet build "./E-menu_backend.csproj" -c Release  -r linux-x64 --self-contained true -o /app/build
+RUN dotnet restore
 
-# Publish the app
+# Kaynak kodunu kopyala
+COPY . .
+
+# Self-contained uygulama için RuntimeIdentifier ekle
+RUN dotnet build -c Release -r linux-x64 --self-contained true -o /app/build
+
+# Publish iþlemi
 FROM build AS publish
-RUN dotnet publish "./E-menu_backend.csproj" -c Release -r linux-x64 --self-contained true -o /app/publish
+RUN dotnet publish -c Release -r linux-x64 --self-contained true -o /app/publish
 
-
-# Base image for final build
+# Final imaj
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
+# Gerekli baðýmlýlýklarý yükle
 RUN apt-get update && apt-get install -y \
     libgdiplus \
     libc6-dev \
@@ -36,9 +40,5 @@ RUN apt-get update && apt-get install -y \
     libfontconfig1 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set the entry point for your application (for self-contained app)
-
+# Uygulamayý baþlat
 ENTRYPOINT ["/app/E-menu_backend"]
-
-
-

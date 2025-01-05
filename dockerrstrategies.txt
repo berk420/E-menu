@@ -20,7 +20,7 @@ docker run -p 3000:3000 berk420/frontend:1.1
 
 docker pull berk420/backend:1.1
 
-docker run -p 8080:8080 -p 8081:8081 berk420/backend:1.1
+ docker run -it --rm -p 5000:8080 -p 5001:8081 berk420/backend:1.1 bash   
 
 
 
