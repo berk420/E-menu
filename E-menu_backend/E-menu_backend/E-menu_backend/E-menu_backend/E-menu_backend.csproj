@@ -7,6 +7,12 @@
     <RootNamespace>E_menu_backend</RootNamespace>
     <UserSecretsId>d7d03304-5cca-409d-b082-c0b5b8474062</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <OutputType>Exe</OutputType>
+    <!-- Proje türü Exe olmalı, çünkü self-contained bir proje -->
+    <SelfContained>true</SelfContained>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <IsPublishable>true</IsPublishable>
+    <EnableSdkContainerSupport>true</EnableSdkContainerSupport>
   </PropertyGroup>
 
   <ItemGroup>
