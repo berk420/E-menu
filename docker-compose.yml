@@ -1,0 +1,13 @@
+services:
+  frontend:
+    image: berk420/frontend:1.1
+    ports:
+      - "3000:3000"
+
+  backend:
+    image: berk420/backend:1.1
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    stdin_open: true # `-it` bayrağı için
+    tty: true        # `--rm` olmadan çalıştırma için
