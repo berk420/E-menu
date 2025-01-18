@@ -44,7 +44,9 @@ namespace E_menu_backend
             // Controller'larý baðlama
             app.MapControllers();
 
-            app.Run("http://*:8080");
+            //DOCKER BUÝLD DE HATA VERÝRSE BURAYA BAK
+            //IIS EXPRESS
+            //app.Run("http://*:8080");
 
 
             // Ana sayfa map'lemesi
